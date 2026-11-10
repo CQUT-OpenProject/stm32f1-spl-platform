@@ -2,7 +2,7 @@ name: Firmware builds
 
 on:
   push:
-    branches: [main]
+    branches: [master]
     tags: ['v*']
   pull_request:
   workflow_dispatch:
@@ -11,6 +11,22 @@ permissions:
   contents: read
 
 jobs:
+  container:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build development image
+        run: docker build -t stm32f1-dev .
+      - name: Build and verify with GCC and Clang
+        run: |
+          docker run --rm -v "$PWD:/workspace/stm32f1-spl-platform" stm32f1-dev bash -ec '
+            for preset in gcc-c8-debug clang-rc-release; do
+              cmake --preset "$preset" -B "/tmp/$preset"
+              cmake --build "/tmp/$preset" --parallel 4
+              python3 tests/verify.py --build-dir "/tmp/$preset"
+            done
+          '
+
   firmware:
     runs-on: ubuntu-24.04
     strategy:
