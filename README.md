@@ -45,6 +45,26 @@ cmake --preset clang-c8-debug \
 
 自定义安装布局可传入 `ARM_GNU_GCC`（编译器完整路径）和 `ARM_NEWLIB_INCLUDE_DIR`（包含 Newlib `stdio.h` 的目录）。不同工具链使用独立构建目录。
 
+## Linux 开发容器
+
+启动 OrbStack 后，在本仓库目录构建镜像并创建容器。以下命令将仓库的父目录挂载到 `/workspace`，可同时访问平台和同级业务工程：
+
+```sh
+docker build -t stm32f1-dev:local .
+docker run -d --name stm32f1-dev \
+  --mount "type=bind,source=$(cd .. && pwd),target=/workspace" \
+  stm32f1-dev:local sleep infinity
+docker exec -it stm32f1-dev bash
+```
+
+容器提供 Arm GNU、Newlib、Clang/LLD、CMake、GDB 和 OpenOCD。在容器内构建示例：
+
+```sh
+cmake --preset gcc-c8-debug -B build/docker/gcc-c8-debug
+cmake --build build/docker/gcc-c8-debug --parallel
+python3 tests/verify.py --build-dir build/docker/gcc-c8-debug
+```
+
 ## 编译示例
 
 ```sh
