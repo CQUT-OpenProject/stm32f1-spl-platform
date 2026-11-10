@@ -1,0 +1,29 @@
+--- a/system_stm32f10x.c
++++ b/system_stm32f10x.c
+@@ -102,6 +102,8 @@
+      If you are using different crystal you have to adapt those functions accordingly.
+     */
+     
++/* Platform HSI8 profile keeps the reset clock instead of enabling HSE/PLL. */
++#if !defined(STM32F1_CLOCK_HSI8)
+ #if defined (STM32F10X_LD_VL) || (defined STM32F10X_MD_VL) || (defined STM32F10X_HD_VL)
+ /* #define SYSCLK_FREQ_HSE    HSE_VALUE */
+  #define SYSCLK_FREQ_24MHz  24000000
+@@ -113,6 +115,8 @@
+ /* #define SYSCLK_FREQ_56MHz  56000000 */
+ #define SYSCLK_FREQ_72MHz  72000000
+ #endif
++
++#endif /* !STM32F1_CLOCK_HSI8 */
+ 
+ /*!< Uncomment the following line if you need to use external SRAM mounted
+      on STM3210E-EVAL board (STM32 High density and XL-density devices) or on 
+@@ -259,6 +263,8 @@
+   /* Configure the System clock frequency, HCLK, PCLK2 and PCLK1 prescalers */
+   /* Configure the Flash Latency cycles and enable prefetch buffer */
+   SetSysClock();
++  /* Publish the actual clock, including HSI fallback if HSE did not start. */
++  SystemCoreClockUpdate();
+ 
+ #ifdef VECT_TAB_SRAM
+   SCB->VTOR = SRAM_BASE | VECT_TAB_OFFSET; /* Vector Table Relocation in Internal SRAM. */

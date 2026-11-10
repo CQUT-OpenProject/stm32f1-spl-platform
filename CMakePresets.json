@@ -1,0 +1,140 @@
+{
+  "version": 3,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 22,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "gcc-c8-debug",
+      "generator": "Unix Makefiles",
+      "binaryDir": "${sourceDir}/build/gcc-c8-debug",
+      "toolchainFile": "${sourceDir}/cmake/toolchains/gcc.cmake",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "STM32F1_EXAMPLE_MCU": "STM32F103C8T6",
+        "STM32F1_EXAMPLE_CLOCK": "HSE8_72",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": true
+      }
+    },
+    {
+      "name": "gcc-c8-release",
+      "generator": "Unix Makefiles",
+      "binaryDir": "${sourceDir}/build/gcc-c8-release",
+      "toolchainFile": "${sourceDir}/cmake/toolchains/gcc.cmake",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "STM32F1_EXAMPLE_MCU": "STM32F103C8T6",
+        "STM32F1_EXAMPLE_CLOCK": "HSE8_72",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": true
+      }
+    },
+    {
+      "name": "gcc-rc-debug",
+      "generator": "Unix Makefiles",
+      "binaryDir": "${sourceDir}/build/gcc-rc-debug",
+      "toolchainFile": "${sourceDir}/cmake/toolchains/gcc.cmake",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "STM32F1_EXAMPLE_MCU": "STM32F103RCT6",
+        "STM32F1_EXAMPLE_CLOCK": "HSE8_72",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": true
+      }
+    },
+    {
+      "name": "gcc-rc-release",
+      "generator": "Unix Makefiles",
+      "binaryDir": "${sourceDir}/build/gcc-rc-release",
+      "toolchainFile": "${sourceDir}/cmake/toolchains/gcc.cmake",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "STM32F1_EXAMPLE_MCU": "STM32F103RCT6",
+        "STM32F1_EXAMPLE_CLOCK": "HSE8_72",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": true
+      }
+    },
+    {
+      "name": "clang-c8-debug",
+      "generator": "Unix Makefiles",
+      "binaryDir": "${sourceDir}/build/clang-c8-debug",
+      "toolchainFile": "${sourceDir}/cmake/toolchains/clang.cmake",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "STM32F1_EXAMPLE_MCU": "STM32F103C8T6",
+        "STM32F1_EXAMPLE_CLOCK": "HSE8_72",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": true
+      }
+    },
+    {
+      "name": "clang-c8-release",
+      "generator": "Unix Makefiles",
+      "binaryDir": "${sourceDir}/build/clang-c8-release",
+      "toolchainFile": "${sourceDir}/cmake/toolchains/clang.cmake",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "STM32F1_EXAMPLE_MCU": "STM32F103C8T6",
+        "STM32F1_EXAMPLE_CLOCK": "HSE8_72",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": true
+      }
+    },
+    {
+      "name": "clang-rc-debug",
+      "generator": "Unix Makefiles",
+      "binaryDir": "${sourceDir}/build/clang-rc-debug",
+      "toolchainFile": "${sourceDir}/cmake/toolchains/clang.cmake",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "STM32F1_EXAMPLE_MCU": "STM32F103RCT6",
+        "STM32F1_EXAMPLE_CLOCK": "HSE8_72",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": true
+      }
+    },
+    {
+      "name": "clang-rc-release",
+      "generator": "Unix Makefiles",
+      "binaryDir": "${sourceDir}/build/clang-rc-release",
+      "toolchainFile": "${sourceDir}/cmake/toolchains/clang.cmake",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "STM32F1_EXAMPLE_MCU": "STM32F103RCT6",
+        "STM32F1_EXAMPLE_CLOCK": "HSE8_72",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": true
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "gcc-c8-debug",
+      "configurePreset": "gcc-c8-debug"
+    },
+    {
+      "name": "gcc-c8-release",
+      "configurePreset": "gcc-c8-release"
+    },
+    {
+      "name": "gcc-rc-debug",
+      "configurePreset": "gcc-rc-debug"
+    },
+    {
+      "name": "gcc-rc-release",
+      "configurePreset": "gcc-rc-release"
+    },
+    {
+      "name": "clang-c8-debug",
+      "configurePreset": "clang-c8-debug"
+    },
+    {
+      "name": "clang-c8-release",
+      "configurePreset": "clang-c8-release"
+    },
+    {
+      "name": "clang-rc-debug",
+      "configurePreset": "clang-rc-debug"
+    },
+    {
+      "name": "clang-rc-release",
+      "configurePreset": "clang-rc-release"
+    }
+  ]
+}

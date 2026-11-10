@@ -1,0 +1,96 @@
+/* SPDX-License-Identifier: MIT */
+ENTRY(Reset_Handler)
+MEMORY
+{
+    FLASH (rx) : ORIGIN = 0x08000000, LENGTH = @flash_kb@K
+    RAM (rwx)  : ORIGIN = 0x20000000, LENGTH = @ram_kb@K
+}
+
+_Min_Heap_Size = 0x200;
+_Min_Stack_Size = 0x400;
+_estack = ORIGIN(RAM) + LENGTH(RAM);
+_sstack = _estack - _Min_Stack_Size;
+
+PHDRS
+{
+    flash PT_LOAD FLAGS(5);
+    ram PT_LOAD FLAGS(6);
+}
+
+SECTIONS
+{
+    .isr_vector : ALIGN(512)
+    {
+        KEEP(*(.isr_vector))
+        . = ALIGN(4);
+    } > FLASH :flash
+    .text : ALIGN(4)
+    {
+        *(.text .text.*)
+        *(.glue_7 .glue_7t)
+        KEEP(*(.init))
+        KEEP(*(.fini))
+        . = ALIGN(4);
+        _etext = .;
+    } > FLASH :flash
+    .rodata : ALIGN(4) { *(.rodata .rodata.*) . = ALIGN(4); } > FLASH :flash
+    .ARM.extab : ALIGN(4) { *(.ARM.extab* .gnu.linkonce.armextab.*) } > FLASH :flash
+    .ARM.exidx : ALIGN(4)
+    {
+        __exidx_start = .;
+        *(.ARM.exidx* .gnu.linkonce.armexidx.*)
+        __exidx_end = .;
+    } > FLASH :flash
+    .preinit_array : ALIGN(4)
+    {
+        __preinit_array_start = .;
+        KEEP(*(.preinit_array .preinit_array.*))
+        __preinit_array_end = .;
+    } > FLASH :flash
+    .init_array : ALIGN(4)
+    {
+        __init_array_start = .;
+        KEEP(*(SORT(.init_array.*)))
+        KEEP(*(.init_array))
+        __init_array_end = .;
+    } > FLASH :flash
+    .fini_array : ALIGN(4)
+    {
+        __fini_array_start = .;
+        KEEP(*(SORT(.fini_array.*)))
+        KEEP(*(.fini_array))
+        __fini_array_end = .;
+    } > FLASH :flash
+    .data : ALIGN(4)
+    {
+        _sdata = .;
+        *(.data .data.* .RamFunc .RamFunc.*)
+        . = ALIGN(4);
+        _edata = .;
+    } > RAM AT> FLASH :ram
+    _sidata = LOADADDR(.data);
+    .bss (NOLOAD) : ALIGN(4)
+    {
+        _sbss = .;
+        __bss_start__ = .;
+        *(.bss .bss.* COMMON)
+        . = ALIGN(4);
+        _ebss = .;
+        __bss_end__ = .;
+    } > RAM :ram
+    .noinit (NOLOAD) : ALIGN(4) { *(.noinit .noinit.*) } > RAM :ram
+    .heap_stack_reservation (NOLOAD) : ALIGN(8)
+    {
+        _end = .;
+        end = .;
+        _heap_start = .;
+        . += _Min_Heap_Size;
+        _heap_end = .;
+        /* Reserve capacity here; the live stack grows down from _estack. */
+        . += _Min_Stack_Size;
+        . = ALIGN(8);
+    } > RAM :ram
+    ASSERT(_heap_end <= _sstack, "RAM overflow: data, heap and stack overlap")
+    .ARM.attributes 0 : { *(.ARM.attributes) }
+    /DISCARD/ : { *(.note.GNU-stack) *(.comment) }
+}

@@ -1,0 +1,3 @@
+include("${CMAKE_CURRENT_LIST_DIR}/common.cmake")
+set(CMAKE_C_COMPILER "${ARM_GNU_GCC}")
+set(CMAKE_ASM_COMPILER "${ARM_GNU_GCC}")

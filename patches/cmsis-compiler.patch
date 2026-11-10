@@ -1,0 +1,85 @@
+--- a/core_cm3.c
++++ b/core_cm3.c
+@@ -442,12 +442,7 @@
+ uint32_t __get_PSP(void) __attribute__( ( naked ) );
+ uint32_t __get_PSP(void)
+ {
+-  uint32_t result=0;
+-
+-  __ASM volatile ("MRS %0, psp\n\t" 
+-                  "MOV r0, %0 \n\t"
+-                  "BX  lr     \n\t"  : "=r" (result) );
+-  return(result);
++  __ASM volatile ("MRS r0, psp\n\t" "BX lr");
+ }
+ 
+ /**
+@@ -459,10 +454,9 @@
+  * (process stack pointer) Cortex processor register
+  */
+ void __set_PSP(uint32_t topOfProcStack) __attribute__( ( naked ) );
+-void __set_PSP(uint32_t topOfProcStack)
+-{
+-  __ASM volatile ("MSR psp, %0\n\t"
+-                  "BX  lr     \n\t" : : "r" (topOfProcStack) );
++void __set_PSP(uint32_t topOfProcStack __attribute__((unused)))
++{
++  __ASM volatile ("MSR psp, r0\n\t" "BX lr");
+ }
+ 
+ /**
+@@ -476,12 +470,7 @@
+ uint32_t __get_MSP(void) __attribute__( ( naked ) );
+ uint32_t __get_MSP(void)
+ {
+-  uint32_t result=0;
+-
+-  __ASM volatile ("MRS %0, msp\n\t" 
+-                  "MOV r0, %0 \n\t"
+-                  "BX  lr     \n\t"  : "=r" (result) );
+-  return(result);
++  __ASM volatile ("MRS r0, msp\n\t" "BX lr");
+ }
+ 
+ /**
+@@ -493,10 +482,9 @@
+  * (main stack pointer) Cortex processor register
+  */
+ void __set_MSP(uint32_t topOfMainStack) __attribute__( ( naked ) );
+-void __set_MSP(uint32_t topOfMainStack)
+-{
+-  __ASM volatile ("MSR msp, %0\n\t"
+-                  "BX  lr     \n\t" : : "r" (topOfMainStack) );
++void __set_MSP(uint32_t topOfMainStack __attribute__((unused)))
++{
++  __ASM volatile ("MSR msp, r0\n\t" "BX lr");
+ }
+ 
+ /**
+@@ -733,7 +721,7 @@
+ {
+    uint32_t result=0;
+   
+-   __ASM volatile ("strexb %0, %2, [%1]" : "=r" (result) : "r" (addr), "r" (value) );
++   __ASM volatile ("strexb %0, %2, [%1]" : "=&r" (result) : "r" (addr), "r" (value) : "memory" );
+    return(result);
+ }
+ 
+@@ -750,7 +738,7 @@
+ {
+    uint32_t result=0;
+   
+-   __ASM volatile ("strexh %0, %2, [%1]" : "=r" (result) : "r" (addr), "r" (value) );
++   __ASM volatile ("strexh %0, %2, [%1]" : "=&r" (result) : "r" (addr), "r" (value) : "memory" );
+    return(result);
+ }
+ 
+@@ -767,7 +755,7 @@
+ {
+    uint32_t result=0;
+   
+-   __ASM volatile ("strex %0, %2, [%1]" : "=r" (result) : "r" (addr), "r" (value) );
++   __ASM volatile ("strex %0, %2, [%1]" : "=&r" (result) : "r" (addr), "r" (value) : "memory" );
+    return(result);
+ }
+ 

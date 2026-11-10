@@ -1,0 +1,17 @@
+set(CMAKE_SYSTEM_NAME Generic)
+set(CMAKE_SYSTEM_PROCESSOR arm)
+set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
+set(ARM_GNU_ROOT "$ENV{ARM_GNU_ROOT}" CACHE PATH "Arm GNU toolchain root")
+find_program(ARM_GNU_GCC NAMES arm-none-eabi-gcc
+    HINTS "${ARM_GNU_ROOT}/bin" REQUIRED)
+get_filename_component(_gnu_bin "${ARM_GNU_GCC}" DIRECTORY)
+find_program(CMAKE_OBJCOPY NAMES arm-none-eabi-objcopy HINTS "${_gnu_bin}" REQUIRED)
+find_program(CMAKE_SIZE NAMES arm-none-eabi-size HINTS "${_gnu_bin}" REQUIRED)
+find_program(ARM_GNU_NM NAMES arm-none-eabi-nm HINTS "${_gnu_bin}" REQUIRED)
+find_program(ARM_GNU_READELF NAMES arm-none-eabi-readelf HINTS "${_gnu_bin}" REQUIRED)
+set(CMAKE_C_FLAGS_INIT "-mcpu=cortex-m3 -mthumb -ffreestanding")
+set(CMAKE_ASM_FLAGS_INIT "-mcpu=cortex-m3 -mthumb")
+set(CMAKE_ASM_FLAGS_DEBUG "-g" CACHE STRING "Assembly debug flags")
+set(CMAKE_ASM_FLAGS_RELEASE "" CACHE STRING "Assembly release flags")
+list(APPEND CMAKE_TRY_COMPILE_PLATFORM_VARIABLES
+    ARM_GNU_ROOT ARM_GNU_GCC STM32F1_CLANG STM32F1_LLD)
